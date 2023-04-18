@@ -17,15 +17,14 @@ function getLotteryNumber($inputString){
     foreach($sampleString as $index=>$number){
     	if($skipNext){ $skipNext = false; continue; }
     	$nextTwoNums = implode('',array($number,$sampleString[$index+1]));
-    	var_dump($nextTwoNums);
+    	
 	    if(($nextTwoNums<59) and ($nextTwoNums>1)){
 	    	$outputString[] = $nextTwoNums;
 	    	$skipNext = true;
 	    }else{
 	    	$outputString[] = $number;
 	    }
-	    print_r($outputString);
-	    if((count($outputString)==7) and (!isset($sampleString[$index+1]))){ 
+	    if((count($outputString)==7) and (($skipNext and (!isset($sampleString[$index+2]))) OR (!$skipNext and (!isset($sampleString[$index+1])))) ){ 
 	      	//we found the number
 	      	return array($sampleString,$outputString);
 	    }
@@ -35,10 +34,11 @@ function getLotteryNumber($inputString){
 }
 
 $output = getLotteryNumber($inputString);
-if(!$output){ echo "No valid numbers found"; }
+if(!$output){ echo "No valid numbers found"; exit(); }
 
-print $output[0];
+print_r(implode('',$output[0])) ;
 echo "=>";
-print_r($output[1]);
+print_r(implode(' ',$output[1]));
+ 
 
 ?>
